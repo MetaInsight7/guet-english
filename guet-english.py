@@ -5,6 +5,7 @@
 import requests
 from lxml import etree
 import time
+import random
 
 def login_web(user,password):
     print("\n正在执行登陆...")
@@ -26,11 +27,11 @@ def login_web(user,password):
         userid = cookie_dict['T_Stu'][-5:]
         print("cookie：" + cookie)
         print("userid：" + userid)
-        return userid
+        return userid, data
     else:
         userid = 0
         print("登录失败！")
-        return userid
+        return userid,data
 
     
 def get_info():
@@ -50,15 +51,23 @@ def get_info():
 
 
 
-def skip_study(user,userid,skip_online_hour,skip_review_hour):
-    print("正在开始刷时长...")
+def skip_study(user,userid,data,skip_online_hour,skip_review_hour):
     
+
+    # 刷登录次数
+    print("\n正在开始刷登录次数...")
+    for i in range(random.randint(5,10)):
+        url = "https://zhihui.guet.edu.cn/Default.aspx"
+        session.post(url,data=data)
+
     # 刷完成度
+    print("正在开始刷完成度...")
     for i in range(2000,2400):
             url_pass = "https://zhihui.guet.edu.cn/stu/webuc/liulja.aspx?uid={}&nid={}".format(userid,i)
             session.get(url_pass)
     
     # 刷在线学习时长
+    print("正在开始刷时长...")
     print("刷在线时长共需{}轮".format(2*skip_online_hour))
     epoch_online = 0
     while epoch_online < 2*skip_online_hour:
@@ -82,9 +91,9 @@ def skip_study(user,userid,skip_online_hour,skip_review_hour):
 
     
     
-print("-------科研小助手 v1.0-------")
+print("-------科研小助手 v1.1-------")
 print("自动挂英语平台学习时长，把更多的时间留给科研")
-print("仅适用于读写平台，听说貌似没有时长要求")
+print("仅适用于读写平台")
 print("Bug反馈地址：https://docs.qq.com/form/page/DRkZCV3JUandRaFlu")
 print("-------Copyright@数学与计算科学学院：MetaInsight--------\n")
 time.sleep(3)
@@ -92,7 +101,7 @@ while True:
     user = input("请输入读写平台账号：")
     password = input("请输入密码：")
     session = requests.session()
-    userid= login_web(user,password)
+    userid,data= login_web(user,password)
     if userid ==0:
         print("请检查账号密码！\n")
     else:
@@ -111,7 +120,7 @@ while True:
         if skip_online_hour > 30 or skip_review_hour > 30:
             print("请输入0-30之间的整数！！")
         else:
-            skip_study(user,userid,skip_online_hour,skip_review_hour)
+            skip_study(user,userid,data,skip_online_hour,skip_review_hour)
             get_info()
             input('按 Enter 退出…')
             break
