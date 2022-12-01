@@ -17,6 +17,7 @@ def login_web(user,password):
         "loginend":"登录",
     }
     r = session.post(url,data=data)
+    status_code = r.status_code
     tree = etree.HTML(r.text)
     result = tree.xpath("/html/head/title//text()")[0]
     if result == "学生信息管理系统":
@@ -28,9 +29,13 @@ def login_web(user,password):
         print("cookie：" + cookie)
         print("userid：" + userid)
         return userid, data
+    elif status_code==403:
+        userid = 1
+        print("登录失败！\n")
+        return userid,data
     else:
         userid = 0
-        print("登录失败！")
+        print("登录失败！\n")
         return userid,data
 
     
@@ -102,8 +107,11 @@ while True:
     password = input("请输入密码：")
     session = requests.session()
     userid,data= login_web(user,password)
-    if userid ==0:
+    if userid == 0:
         print("请检查账号密码！\n")
+    elif userid == 1:
+        print("请使用校园网！")
+        print("断开手机热点，连接校园wifi或宽带，再次尝试！\n")
     else:
         break
         
