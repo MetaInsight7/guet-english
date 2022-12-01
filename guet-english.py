@@ -56,7 +56,7 @@ def skip_study(user,userid,data,skip_online_hour,skip_review_hour):
 
     # 刷登录次数
     print("\n正在开始刷登录次数...")
-    for i in range(random.randint(5,10)):
+    for i in range(random.randint(10,30)):
         url = "https://zhihui.guet.edu.cn/Default.aspx"
         session.post(url,data=data)
 
@@ -68,7 +68,7 @@ def skip_study(user,userid,data,skip_online_hour,skip_review_hour):
     
     # 刷在线学习时长
     print("正在开始刷时长...")
-    print("刷在线时长共需{}轮".format(2*skip_online_hour))
+    print("\n刷在线时长共需{}轮".format(2*skip_online_hour))
     epoch_online = 0
     while epoch_online < 2*skip_online_hour:
         for i in range(2000,2400):
@@ -78,7 +78,7 @@ def skip_study(user,userid,data,skip_online_hour,skip_review_hour):
         print("第{}轮结束！".format(epoch_online))
     
     # 刷在线复习时长
-    print("刷复习时长共需{}轮".format(3*skip_review_hour))
+    print("\n刷复习时长共需{}轮".format(3*skip_review_hour))
     epoch_review = 0
     while epoch_review < 3*skip_review_hour:
         for i in range(2000,2400):
@@ -91,14 +91,14 @@ def skip_study(user,userid,data,skip_online_hour,skip_review_hour):
 
     
     
-print("-------科研小助手 v1.1-------")
+print("---------------------英语小助手 v1.2---------------------")
 print("自动挂英语平台学习时长，把更多的时间留给科研")
-print("仅适用于读写平台")
 print("Bug反馈地址：https://docs.qq.com/form/page/DRkZCV3JUandRaFlu")
+print("开源地址：https://github.com/MetaInsight7/guet-english   欢迎star")
 print("-------Copyright@数学与计算科学学院：MetaInsight--------\n")
 time.sleep(3)
 while True:
-    user = input("请输入读写平台账号：")
+    user = input("请输入账号：")
     password = input("请输入密码：")
     session = requests.session()
     userid,data= login_web(user,password)
